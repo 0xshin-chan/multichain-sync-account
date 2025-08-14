@@ -1,2 +1,2 @@
 # multichain-sync-account
-account模型扫脸
+account模型扫链
