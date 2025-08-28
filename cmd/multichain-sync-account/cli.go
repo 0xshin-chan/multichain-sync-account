@@ -3,7 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/huahaiwudi/multichain-sync-account/services"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"time"
 
 	"github.com/ethereum/go-ethereum/log"
@@ -15,6 +16,11 @@ import (
 	"github.com/huahaiwudi/multichain-sync-account/config"
 	"github.com/huahaiwudi/multichain-sync-account/database"
 	flags2 "github.com/huahaiwudi/multichain-sync-account/flags"
+	http2 "github.com/huahaiwudi/multichain-sync-account/notifier/http"
+	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient"
+	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient/account"
+	"github.com/huahaiwudi/multichain-sync-account/services/http"
+	"github.com/huahaiwudi/multichain-sync-account/services/rpc"
 )
 
 const (
@@ -40,16 +46,32 @@ func runRpc(ctx *cli.Context, shutdown context.CancelCauseFunc) (cliapp.Lifecycl
 		log.Error("failed to load config", "err", err)
 		return nil, err
 	}
-	grpcServerCfg := &services.BusinessMiddleConfig{
+	grpcServerCfg := &rpc.BusinessMiddleConfig{
 		GrpcHostname: cfg.RpcServer.Host,
 		GrpcPort:     cfg.RpcServer.Port,
+		ChainName:    cfg.ChainNode.ChainName,
+		NetWork:      cfg.ChainNode.NetWork,
 	}
 	db, err := database.NewDB(ctx.Context, cfg.MasterDB)
 	if err != nil {
 		log.Error("failed to connect to database", "err", err)
 		return nil, err
 	}
-	return services.NewBusinessMiddleWireServices(db, grpcServerCfg)
+
+	log.Info("chain account rpc", "rpc url:", cfg.ChainAccountRpc)
+	conn, err := grpc.NewClient(cfg.ChainAccountRpc, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Error("Connect to da retriever fail", "err", err)
+		return nil, err
+	}
+	client := account.NewWalletAccountServiceClient(conn)
+	accountClient, err := syncclient.NewChainAccountRpcClient(context.Background(), client, cfg.ChainNode.ChainName)
+	if err != nil {
+		log.Error("new wallet account client fail", "err", err)
+		return nil, err
+	}
+
+	return rpc.NewBusinessMiddleWireServices(db, grpcServerCfg, accountClient)
 }
 
 func runMigrations(ctx *cli.Context) error {
@@ -75,7 +97,27 @@ func runMigrations(ctx *cli.Context) error {
 }
 
 func runNotify(ctx *cli.Context, shutdown context.CancelCauseFunc) (cliapp.Lifecycle, error) {
-	return nil, nil
+	fmt.Println("running notify task...")
+	cfg, err := config.LoadConfig(ctx)
+	if err != nil {
+		log.Error("failed to load config", "err", err)
+		return nil, err
+	}
+	db, err := database.NewDB(ctx.Context, cfg.MasterDB)
+	if err != nil {
+		log.Error("failed to connect to database", "err", err)
+		return nil, err
+	}
+	return http2.NewNotifier(ctx.Context, cfg, db, shutdown)
+}
+
+func runApi(ctx *cli.Context, _ context.CancelCauseFunc) (cliapp.Lifecycle, error) {
+	cfg, err := config.LoadConfig(ctx)
+	if err != nil {
+		log.Error("failed to load config", "err", err)
+		return nil, err
+	}
+	return http.NewApi(ctx.Context, &cfg)
 }
 
 func NewCli(GitCommit string, GitData string) *cli.App {
@@ -99,6 +141,12 @@ func NewCli(GitCommit string, GitData string) *cli.App {
 			},
 			{
 				Name:        "notify",
+				Flags:       flags,
+				Description: "Run rpc scanner wallet chain node",
+				Action:      cliapp.LifecycleCmd(runNotify),
+			},
+			{
+				Name:        "api",
 				Flags:       flags,
 				Description: "Run rpc scanner wallet chain node",
 				Action:      cliapp.LifecycleCmd(runNotify),

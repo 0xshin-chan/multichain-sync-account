@@ -31,6 +31,7 @@ type Internals struct {
 
 	// Gas 费用
 	GasLimit             uint64 `json:"gas_limit"`
+	Nonce                uint64 `json:"nonce"`
 	MaxFeePerGas         string `json:"max_fee_per_gas"`
 	MaxPriorityFeePerGas string `json:"max_priority_fee_per_gas"`
 
@@ -41,20 +42,24 @@ type Internals struct {
 	TokenMeta    string         `json:"token_meta" gorm:"column:token_meta"` // Token 元数据
 
 	// 交易签名
-	TxSignHex string `json:"tx_sign_hex" gorm:"column:tx_sign_hex"`
+	TxSignHex   string `json:"tx_sign_hex" gorm:"column:tx_sign_hex"`
+	TxUnsignHex string `json:"tx_unsign_hex" gorm:"column:tx_unsign_hex"`
+	// 判断是否为自签名
+	SelfSign bool `json:"self_sign" gorm:"column:self_sign"`
 }
 
 type InternalsView interface {
-	QueryNotifyInternal(requestId string) ([]*Internals, error)
 	QueryInternalsByTxHash(requestId string, txHash common.Hash) (*Internals, error)
 	QueryInternalsById(requestId string, guid string) (*Internals, error)
-	UnSendInternalsList(requestId string) ([]*Internals, error)
+	QueryInternalsListByStatus(requestId string, status TxStatus) ([]*Internals, error)
 }
 
 type InternalsDB interface {
 	InternalsView
 
 	StoreInternal(string, *Internals) error
+	StoreInternals(string, []Internals) error
+
 	UpdateInternalByTxHash(requestId string, txHash common.Hash, signedTx string, status TxStatus) error
 	UpdateInternalById(requestId string, id string, signedTx string, status TxStatus) error
 	UpdateInternalStatusByTxHash(requestId string, status TxStatus, internalsList []*Internals) error
@@ -71,19 +76,12 @@ func NewInternalsDB(db *gorm.DB) InternalsDB {
 	return &internalsDB{gorm: db}
 }
 
-func (db *internalsDB) QueryNotifyInternal(requestId string) ([]*Internals, error) {
-	var notifyInternals []*Internals
-	result := db.gorm.Table("internals_"+requestId).
-		Where("status = ? or status = ?", TxStatusWalletDone, TxStatusNotified).
-		Find(&notifyInternals)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return notifyInternals, nil
-}
-
 func (db *internalsDB) StoreInternal(requestId string, internals *Internals) error {
 	return db.gorm.Table("internals_" + requestId).Create(internals).Error
+}
+
+func (db *internalsDB) StoreInternals(requestId string, internals []Internals) error {
+	return db.gorm.Table("internals_"+requestId).CreateInBatches(internals, len(internals)).Error
 }
 
 func (db *internalsDB) QueryInternalsByTxHash(requestId string, txHash common.Hash) (*Internals, error) {
@@ -114,10 +112,10 @@ func (db *internalsDB) QueryInternalsById(requestId string, guid string) (*Inter
 	return &internalsEntity, nil
 }
 
-func (db *internalsDB) UnSendInternalsList(requestId string) ([]*Internals, error) {
+func (db *internalsDB) QueryInternalsListByStatus(requestId string, status TxStatus) ([]*Internals, error) {
 	var internalsList []*Internals
 	err := db.gorm.Table("internals_"+requestId).
-		Where("status = ?", TxStatusSigned).
+		Where("status = ?", status).
 		Find(&internalsList).Error
 	if err != nil {
 		return nil, err

@@ -22,6 +22,7 @@ type Tokens struct {
 
 type TokensView interface {
 	TokensInfoByAddress(string, string) (*Tokens, error)
+	TokensInfoByBusiness(string) ([]Tokens, error)
 }
 
 type TokensDB interface {
@@ -53,4 +54,16 @@ func (db *tokensDB) TokensInfoByAddress(requestId string, address string) (*Toke
 		return nil, err
 	}
 	return &tokensEntry, nil
+}
+
+func (db *tokensDB) TokensInfoByBusiness(requestId string) ([]Tokens, error) {
+	var tokensEntry []Tokens
+	err := db.gorm.Table("tokens_" + requestId).Find(&tokensEntry).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return tokensEntry, nil
 }

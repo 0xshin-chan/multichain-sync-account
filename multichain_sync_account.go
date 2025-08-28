@@ -1,7 +1,12 @@
-package multichain_sync_account
+package multichain_syncs6_account
 
 import (
 	"context"
+	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient"
+	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient/account"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"sync/atomic"
 
 	"github.com/ethereum/go-ethereum/log"
@@ -10,6 +15,8 @@ import (
 	"github.com/huahaiwudi/multichain-sync-account/worker"
 )
 
+// MultiChainSync 用于统一管理多链同步相关的子模块：存款、提现、内部转账、回滚。
+// 负责整体的启动和停止。
 type MultiChainSync struct {
 	Synchronizer *worker.BaseSynchronizer
 	Deposit      *worker.Deposit
@@ -22,6 +29,7 @@ type MultiChainSync struct {
 }
 
 func NewMultiChainSync(ctx context.Context, cfg *config.Config, shutdown context.CancelCauseFunc) (*MultiChainSync, error) {
+	// 初始化数据库连接
 	db, err := database.NewDB(ctx, cfg.MasterDB)
 	if err != nil {
 		log.Error("init database fail", err)
@@ -30,10 +38,25 @@ func NewMultiChainSync(ctx context.Context, cfg *config.Config, shutdown context
 
 	log.Info("New deposit", "ChainAccountRpc", cfg.ChainAccountRpc)
 
-	deposit, _ := worker.NewDeposit(cfg, db, shutdown)
-	withdraw, _ := worker.NewWithdraw(cfg, db, shutdown)
-	internal, _ := worker.NewInternal(cfg, db, shutdown)
-	fallback, _ := worker.NewFallBack(cfg, db, shutdown)
+	// 连接链账户 RPC（gRPC），WithTransportCredentials：指定加密协议，NewCredentials： 明文传输
+	conn, err := grpc.NewClient(cfg.ChainAccountRpc, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Error("Connect to da retriever fail", "err", err)
+		return nil, err
+	}
+	// 创建链账户客户端
+	client := account.NewWalletAccountServiceClient(conn)
+
+	accountClient, err := syncclient.NewChainAccountRpcClient(context.Background(), client, "Ethereum")
+	if err != nil {
+		log.Error("new wallet account http fail", "err", err)
+		return nil, err
+	}
+
+	deposit, _ := worker.NewDeposit(cfg, db, accountClient, shutdown)
+	withdraw, _ := worker.NewWithdraw(cfg, db, accountClient, shutdown)
+	internal, _ := worker.NewInternal(cfg, db, accountClient, shutdown)
+	fallback, _ := worker.NewFallBack(cfg, db, accountClient, deposit, shutdown)
 
 	out := &MultiChainSync{
 		Deposit:  deposit,

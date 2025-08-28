@@ -24,6 +24,7 @@ const (
 	BusinessMiddleWireServices_BuildUnSignTransaction_FullMethodName      = "/syncs.BusinessMiddleWireServices/buildUnSignTransaction"
 	BusinessMiddleWireServices_BuildSignedTransaction_FullMethodName      = "/syncs.BusinessMiddleWireServices/buildSignedTransaction"
 	BusinessMiddleWireServices_SetTokenAddress_FullMethodName             = "/syncs.BusinessMiddleWireServices/setTokenAddress"
+	BusinessMiddleWireServices_SubmitWithdraw_FullMethodName              = "/syncs.BusinessMiddleWireServices/submitWithdraw"
 )
 
 // BusinessMiddleWireServicesClient is the client API for BusinessMiddleWireServices service.
@@ -35,6 +36,8 @@ type BusinessMiddleWireServicesClient interface {
 	BuildUnSignTransaction(ctx context.Context, in *UnSignTransactionRequest, opts ...grpc.CallOption) (*UnSignTransactionResponse, error)
 	BuildSignedTransaction(ctx context.Context, in *SignedTransactionRequest, opts ...grpc.CallOption) (*SignedTransactionResponse, error)
 	SetTokenAddress(ctx context.Context, in *SetTokenAddressRequest, opts ...grpc.CallOption) (*SetTokenAddressResponse, error)
+	// 提交提现交易
+	SubmitWithdraw(ctx context.Context, in *SubmitWithdrawRequest, opts ...grpc.CallOption) (*SubmitWithdrawResponse, error)
 }
 
 type businessMiddleWireServicesClient struct {
@@ -95,6 +98,16 @@ func (c *businessMiddleWireServicesClient) SetTokenAddress(ctx context.Context, 
 	return out, nil
 }
 
+func (c *businessMiddleWireServicesClient) SubmitWithdraw(ctx context.Context, in *SubmitWithdrawRequest, opts ...grpc.CallOption) (*SubmitWithdrawResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SubmitWithdrawResponse)
+	err := c.cc.Invoke(ctx, BusinessMiddleWireServices_SubmitWithdraw_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BusinessMiddleWireServicesServer is the server API for BusinessMiddleWireServices service.
 // All implementations should embed UnimplementedBusinessMiddleWireServicesServer
 // for forward compatibility.
@@ -104,6 +117,8 @@ type BusinessMiddleWireServicesServer interface {
 	BuildUnSignTransaction(context.Context, *UnSignTransactionRequest) (*UnSignTransactionResponse, error)
 	BuildSignedTransaction(context.Context, *SignedTransactionRequest) (*SignedTransactionResponse, error)
 	SetTokenAddress(context.Context, *SetTokenAddressRequest) (*SetTokenAddressResponse, error)
+	// 提交提现交易
+	SubmitWithdraw(context.Context, *SubmitWithdrawRequest) (*SubmitWithdrawResponse, error)
 }
 
 // UnimplementedBusinessMiddleWireServicesServer should be embedded to have
@@ -127,6 +142,9 @@ func (UnimplementedBusinessMiddleWireServicesServer) BuildSignedTransaction(cont
 }
 func (UnimplementedBusinessMiddleWireServicesServer) SetTokenAddress(context.Context, *SetTokenAddressRequest) (*SetTokenAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetTokenAddress not implemented")
+}
+func (UnimplementedBusinessMiddleWireServicesServer) SubmitWithdraw(context.Context, *SubmitWithdrawRequest) (*SubmitWithdrawResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitWithdraw not implemented")
 }
 func (UnimplementedBusinessMiddleWireServicesServer) testEmbeddedByValue() {}
 
@@ -238,6 +256,24 @@ func _BusinessMiddleWireServices_SetTokenAddress_Handler(srv interface{}, ctx co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BusinessMiddleWireServices_SubmitWithdraw_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubmitWithdrawRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BusinessMiddleWireServicesServer).SubmitWithdraw(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BusinessMiddleWireServices_SubmitWithdraw_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BusinessMiddleWireServicesServer).SubmitWithdraw(ctx, req.(*SubmitWithdrawRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BusinessMiddleWireServices_ServiceDesc is the grpc.ServiceDesc for BusinessMiddleWireServices service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -264,6 +300,10 @@ var BusinessMiddleWireServices_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "setTokenAddress",
 			Handler:    _BusinessMiddleWireServices_SetTokenAddress_Handler,
+		},
+		{
+			MethodName: "submitWithdraw",
+			Handler:    _BusinessMiddleWireServices_SubmitWithdraw_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

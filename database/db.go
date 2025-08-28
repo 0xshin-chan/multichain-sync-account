@@ -92,6 +92,9 @@ func NewDB(ctx context.Context, dbConfig config.DBConfig) (*DB, error) {
 	return db, nil
 }
 
+// Transaction db.gorm 是原始的 *gorm.DB
+// db.gorm.Transaction() 会 Begin() 开启一个事务，得到一个新的 *gorm.DB
+// 这个事务内的 *gorm.DB 就传进来作为参数 tx
 func (db *DB) Transaction(fn func(db *DB) error) error {
 	return db.gorm.Transaction(func(tx *gorm.DB) error {
 		txDB := &DB{

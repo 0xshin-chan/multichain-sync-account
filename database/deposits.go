@@ -37,11 +37,14 @@ type Deposits struct {
 	TokenId      string         `gorm:"type:varchar;not null" json:"token_id"`
 	TokenMeta    string         `gorm:"type:varchar;not null" json:"token_meta"`
 
-	TxSignHex string `gorm:"type:varchar;not null" json:"tx_sign_hex"`
+	TxSignHex    string `gorm:"type:varchar;not null" json:"tx_sign_hex"`
+	IsCollection bool   `json:"is_collection"`
 }
 
 type DepositsView interface {
 	QueryNotifyDeposits(requestId string) ([]*Deposits, error)
+	QueryNeedCollectionDeposits(requestId string, tokenAddress string, minAmount *big.Int) ([]*Deposits, error)
+
 	QueryDepositsByTxHash(requestId string, txHash common.Hash) (*Deposits, error)
 	QueryDepositsById(requestId string, guid string) (*Deposits, error)
 }
@@ -50,10 +53,10 @@ type DepositsDB interface {
 	DepositsView
 
 	StoreDeposits(string, []*Deposits) error
-	UpdateDepositsComfirms(requestId string, blockNumber uint64, confirms uint64) error
+	UpdateDepositsComfirms(requestId string, blockNumber uint64, preconfirms uint64, confirms uint64) error
 	UpdateDepositById(requestId string, guid string, signedTx string, status TxStatus) error
 	UpdateDepositsStatusById(requestId string, status TxStatus, depositList []*Deposits) error
-	UpdateDepositsStatusByTxHash(requestId string, status TxStatus, depositList []*Deposits) error
+	UpdateDepositsStatusByTxHash(requestId string, depositList []*Deposits) error
 	UpdateDepositListByTxHash(requestId string, depositList []*Deposits) error
 	UpdateDepositListById(requestId string, depositList []*Deposits) error
 	HandleFallBackDeposits(requestId string, startBlock, EndBlock *big.Int) error
@@ -65,9 +68,19 @@ type depositsDB struct {
 
 func (db *depositsDB) QueryNotifyDeposits(requestId string) ([]*Deposits, error) {
 	var notifyDeposits []*Deposits
+	statusList := [9]TxStatus{
+		TxStatusUnSafe,
+		TxStatusSafe,
+		TxStatusSafe,
+		TxStatusFinalized,
+		TxStatusSafeNotifyFail,
+		TxStatusSafeNotifyFail,
+		TxStatusSafeNotifyFail,
+		TxStatusFallback,
+		TxStatusFallbackNotifyFail,
+	}
 	result := db.gorm.Table("deposits_"+requestId).
-		Where("status = ? or status = ?", TxStatusWalletDone, TxStatusNotified).
-		Find(&notifyDeposits) // Correctly populate the slice
+		Where("status IN ?", statusList).Find(&notifyDeposits) // Correctly populate the slice
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, nil // Return nil slice instead of error
@@ -75,6 +88,18 @@ func (db *depositsDB) QueryNotifyDeposits(requestId string) ([]*Deposits, error)
 		return nil, result.Error
 	}
 	return notifyDeposits, nil
+}
+
+func (db *depositsDB) QueryNeedCollectionDeposits(requestId string, tokenAddress string, minAmount *big.Int) ([]*Deposits, error) {
+	var needCollectionDeposits []*Deposits
+	result := db.gorm.Table("deposits_"+requestId).
+		Where("token_address = ? and amount >= ? and is_collection = ?", tokenAddress, minAmount, true).Find(&needCollectionDeposits)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+	}
+	return needCollectionDeposits, nil
 }
 
 func (db *depositsDB) QueryDepositsByTxHash(requestId string, txHash common.Hash) (*Deposits, error) {
@@ -109,11 +134,11 @@ func (db *depositsDB) QueryDepositsById(requestId string, guid string) (*Deposit
 	return &deposit, nil
 }
 
-func (db *depositsDB) UpdateDepositsComfirms(requestId string, blockNumber uint64, confirms uint64) error {
+func (db *depositsDB) UpdateDepositsComfirms(requestId string, blockNumber uint64, preconfirms uint64, confirms uint64) error {
 	return db.gorm.Transaction(func(tx *gorm.DB) error {
 		var unConfirmDeposits []*Deposits
 		result := tx.Table("deposits_"+requestId).
-			Where("block_number <= ? AND status = ? AND status != ?", blockNumber, TxStatusBroadcasted, TxStatusFallback).
+			Where("block_number <= ? AND status = ? AND status != ?", blockNumber, TxStatusFinalized, TxStatusFallback).
 			Find(&unConfirmDeposits)
 		if result.Error != nil {
 			return result.Error
@@ -123,9 +148,10 @@ func (db *depositsDB) UpdateDepositsComfirms(requestId string, blockNumber uint6
 			chainConfirm := blockNumber - deposit.BlockNumber.Uint64()
 			if chainConfirm >= confirms {
 				deposit.Confirms = uint8(confirms)
-				deposit.Status = TxStatusWalletDone
-			} else {
-				deposit.Confirms = uint8(chainConfirm)
+				deposit.Status = TxStatusFinalized
+			} else if chainConfirm < confirms && chainConfirm >= preconfirms {
+				deposit.Confirms = uint8(preconfirms)
+				deposit.Status = TxStatusSafe
 			}
 			if err := tx.Table("deposits_" + requestId).Save(&deposit).Error; err != nil {
 				return err
@@ -157,40 +183,20 @@ func (db *depositsDB) UpdateDepositsStatusById(requestId string, status TxStatus
 	})
 }
 
-func (db *depositsDB) UpdateDepositsStatusByTxHash(requestId string, status TxStatus, depositList []*Deposits) error {
-	if len(depositList) == 0 {
-		return nil
+func (db *depositsDB) UpdateDepositsStatusByTxHash(requestId string, depositList []*Deposits) error {
+	for _, depositItem := range depositList {
+		var depositTx Deposits
+		err := db.gorm.Table("deposits_"+requestId).Where("hash=?", depositItem.TxHash.String()).Take(&depositTx).Error
+		if err != nil {
+			log.Error("query data fail", "err", err)
+			return err
+		}
+		depositTx.Status = depositItem.Status
+		if err := db.gorm.Table("deposits_" + requestId).Save(&depositTx).Error; err != nil {
+			return err
+		}
 	}
-	tableName := fmt.Sprintf("deposits_%s", requestId)
-
-	return db.gorm.Transaction(func(tx *gorm.DB) error {
-		var txHashList []string
-		for _, deposit := range depositList {
-			txHashList = append(txHashList, deposit.TxHash.String())
-		}
-
-		result := tx.Table(tableName).
-			Where("hash IN ?", txHashList).
-			Update("status", status)
-
-		if result.Error != nil {
-			return fmt.Errorf("batch update status failed: %w", result.Error)
-		}
-
-		if result.RowsAffected == 0 {
-			log.Warn("No deposits updated",
-				"requestId", requestId,
-				"expectedCount", len(depositList),
-			)
-		}
-
-		log.Info("Batch update deposits status success",
-			"requestId", requestId,
-			"count", result.RowsAffected,
-			"status", status,
-		)
-		return nil
-	})
+	return nil
 }
 
 func (db *depositsDB) UpdateDepositListByTxHash(requestId string, depositList []*Deposits) error {

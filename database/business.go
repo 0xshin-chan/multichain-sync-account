@@ -20,6 +20,7 @@ type BusinessView interface {
 	QueryBusinessByUuid(string) (*Business, error)
 }
 
+// 结构体中不能放 方法 ，所以用 interface
 type BusinessDB interface {
 	BusinessView
 
@@ -35,6 +36,7 @@ func NewBusinessDB(db *gorm.DB) BusinessDB {
 }
 
 func (db *businessDB) StoreBusiness(business *Business) error {
+	// gorm 里面 create(business) 是将 business 的每条数据 insert 到business表中
 	result := db.gorm.Table("business").Create(business)
 	return result.Error
 }

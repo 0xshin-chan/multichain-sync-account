@@ -10,6 +10,8 @@ var (
 )
 
 // Clamp 对一个区间 [start, end] 内的值进行“约束”，它根据指定的size，计算从 start 开始的一个范围，如果范围小于或等于 size，返回 end；否则，返回 start + size - 1。
+// 如果 size > end - start, 那么就返回 end
+// 如果 size < end - start, 那么就返回 start + size - 1
 func Clamp(start, end *big.Int, size uint64) *big.Int {
 	temp := new(big.Int)
 	count := temp.Sub(end, start).Uint64() + 1

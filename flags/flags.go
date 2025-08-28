@@ -201,6 +201,12 @@ var (
 		EnvVars: prefixEnvVars("API_CACHE_DETAIL_EXPIRE_TIME"),
 		Value:   time.Minute * 30,
 	}
+	IsSelfSignFlag = &cli.BoolFlag{
+		Name:    "is-self-sign",
+		Usage:   "Is self sign this flag",
+		EnvVars: prefixEnvVars("IS_SELF_SIGN"),
+		Value:   false,
+	}
 )
 
 var requireFlags = []cli.Flag{

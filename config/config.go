@@ -26,12 +26,15 @@ type Config struct {
 	CacheConfig     CacheConfig
 	RpcServer       ServerConfig
 	MetricsServer   ServerConfig
+	HttpServer      ServerConfig
 	ChainAccountRpc string
+	IsSelfSign      bool
 }
 
 type ChainNodeConfig struct {
 	ChainId              uint64
 	ChainName            string
+	NetWork              string
 	RpcUrl               string
 	StartingHeight       uint
 	Confirmations        uint
@@ -128,5 +131,6 @@ func NewConfig(ctx *cli.Context) Config {
 			Host: ctx.String(flags.MetricsHostFlag.Name),
 			Port: ctx.Int(flags.MetricsPortFlag.Name),
 		},
+		IsSelfSign: ctx.Bool(flags.IsSelfSignFlag.Name),
 	}
 }

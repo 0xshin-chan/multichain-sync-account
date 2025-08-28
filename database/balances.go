@@ -30,6 +30,8 @@ type BalancesView interface {
 		address,
 		tokenAddress common.Address,
 	) (*Balances, error)
+
+	NeedToColdWallet(requestId string, tokenAddress common.Address, minToColdAmount *big.Int) ([]Balances, error)
 }
 
 type BalancesDB interface {
@@ -167,6 +169,22 @@ func (db *balancesDB) QueryWalletBalanceByTokenAndAddress(
 	}
 
 	return nil, fmt.Errorf("query balance failed: %w", err)
+}
+
+func (db *balancesDB) NeedToColdWallet(requestId string, tokenAddress common.Address, minToColdAmount *big.Int) ([]Balances, error) {
+	var balance []Balances
+	err := db.gorm.Table("balances_"+requestId).
+		Where("address_type = ? AND token_address = ? AND balance >= ?",
+			AddressTypeHot,
+			strings.ToLower(tokenAddress.String()),
+			minToColdAmount,
+		).
+		Find(&balance).
+		Error
+	if err != nil {
+		return nil, err
+	}
+	return balance, nil
 }
 
 func (db *balancesDB) queryBalance(

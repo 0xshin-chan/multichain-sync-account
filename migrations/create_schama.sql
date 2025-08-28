@@ -131,7 +131,8 @@ CREATE TABLE IF NOT EXISTS deposits
     token_id                 VARCHAR  NOT NULL,
     token_meta               VARCHAR  NOT NULL,
 
-    tx_sign_hex              VARCHAR  NOT NULL
+    tx_sign_hex              VARCHAR  NOT NULL,
+    is_collection            BOOLEAN  NOT NULL,
     );
 CREATE INDEX IF NOT EXISTS deposits_hash ON deposits (hash);
 CREATE INDEX IF NOT EXISTS deposits_timestamp ON deposits (timestamp);
@@ -155,6 +156,7 @@ CREATE TABLE IF NOT EXISTS withdraws
     memo                     VARCHAR NOT NULL,
 
     gas_limit                INTEGER NOT NULL,
+    nonce                    INTEGER NOT NULL CHECK (nonce > 0),
     max_fee_per_gas          VARCHAR NOT NULL,
     max_priority_fee_per_gas VARCHAR NOT NULL,
 
@@ -163,7 +165,8 @@ CREATE TABLE IF NOT EXISTS withdraws
     token_id                 VARCHAR NOT NULL,
     token_meta               VARCHAR NOT NULL,
 
-    tx_sign_hex              VARCHAR NOT NULL
+    tx_sign_hex              VARCHAR NOT NULL,
+    self_sign                BOOLEAN DEFAULT false
     );
 
 CREATE INDEX IF NOT EXISTS withdraws_hash ON withdraws (hash);
@@ -188,6 +191,7 @@ CREATE TABLE IF NOT EXISTS internals
     memo                     VARCHAR NOT NULL,
 
     gas_limit                INTEGER NOT NULL,
+    nonce                    INTEGER NOT NULL CHECK (nonce > 0),
     max_fee_per_gas          VARCHAR NOT NULL,
     max_priority_fee_per_gas VARCHAR NOT NULL,
 
@@ -196,7 +200,9 @@ CREATE TABLE IF NOT EXISTS internals
     token_id                 VARCHAR NOT NULL,
     token_meta               VARCHAR NOT NULL,
 
-    tx_sign_hex              VARCHAR NOT NULL
+    tx_sign_hex              VARCHAR NOT NULL,
+    tx_unsign_hex            VARCHAR NOT NULL,
+    self_sign                BOOLEAN DEFAULT false
     );
 
 CREATE INDEX IF NOT EXISTS internals_hash ON internals (hash);

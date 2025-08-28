@@ -481,26 +481,110 @@ func (x *ExportAddressesResponse) GetAddresses() []*Address {
 	return nil
 }
 
-type UnSignTransactionRequest struct {
+type UnSignTransaction struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	ConsumerToken   string                 `protobuf:"bytes,1,opt,name=consumer_token,json=consumerToken,proto3" json:"consumer_token,omitempty"`
-	RequestId       string                 `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	ChainId         string                 `protobuf:"bytes,3,opt,name=chain_id,json=chainId,proto3" json:"chain_id,omitempty"`
-	Chain           string                 `protobuf:"bytes,4,opt,name=chain,proto3" json:"chain,omitempty"`
-	From            string                 `protobuf:"bytes,5,opt,name=from,proto3" json:"from,omitempty"`
-	To              string                 `protobuf:"bytes,6,opt,name=to,proto3" json:"to,omitempty"`
-	Value           string                 `protobuf:"bytes,7,opt,name=value,proto3" json:"value,omitempty"`
-	ContractAddress string                 `protobuf:"bytes,8,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
-	TokenId         string                 `protobuf:"bytes,9,opt,name=token_id,json=tokenId,proto3" json:"token_id,omitempty"`
-	TokenMeta       string                 `protobuf:"bytes,10,opt,name=token_meta,json=tokenMeta,proto3" json:"token_meta,omitempty"`
-	TxType          string                 `protobuf:"bytes,11,opt,name=tx_type,json=txType,proto3" json:"tx_type,omitempty"`
+	ChainId         string                 `protobuf:"bytes,1,opt,name=chain_id,json=chainId,proto3" json:"chain_id,omitempty"`
+	From            string                 `protobuf:"bytes,2,opt,name=from,proto3" json:"from,omitempty"`
+	To              string                 `protobuf:"bytes,3,opt,name=to,proto3" json:"to,omitempty"`
+	Value           string                 `protobuf:"bytes,4,opt,name=value,proto3" json:"value,omitempty"`
+	ContractAddress string                 `protobuf:"bytes,5,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
+	TokenId         string                 `protobuf:"bytes,6,opt,name=token_id,json=tokenId,proto3" json:"token_id,omitempty"`
+	TokenMeta       string                 `protobuf:"bytes,7,opt,name=token_meta,json=tokenMeta,proto3" json:"token_meta,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
+func (x *UnSignTransaction) Reset() {
+	*x = UnSignTransaction{}
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnSignTransaction) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnSignTransaction) ProtoMessage() {}
+
+func (x *UnSignTransaction) ProtoReflect() protoreflect.Message {
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnSignTransaction.ProtoReflect.Descriptor instead.
+func (*UnSignTransaction) Descriptor() ([]byte, []int) {
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UnSignTransaction) GetChainId() string {
+	if x != nil {
+		return x.ChainId
+	}
+	return ""
+}
+
+func (x *UnSignTransaction) GetFrom() string {
+	if x != nil {
+		return x.From
+	}
+	return ""
+}
+
+func (x *UnSignTransaction) GetTo() string {
+	if x != nil {
+		return x.To
+	}
+	return ""
+}
+
+func (x *UnSignTransaction) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+func (x *UnSignTransaction) GetContractAddress() string {
+	if x != nil {
+		return x.ContractAddress
+	}
+	return ""
+}
+
+func (x *UnSignTransaction) GetTokenId() string {
+	if x != nil {
+		return x.TokenId
+	}
+	return ""
+}
+
+func (x *UnSignTransaction) GetTokenMeta() string {
+	if x != nil {
+		return x.TokenMeta
+	}
+	return ""
+}
+
+type UnSignTransactionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ConsumerToken string                 `protobuf:"bytes,1,opt,name=consumer_token,json=consumerToken,proto3" json:"consumer_token,omitempty"`
+	RequestId     string                 `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	UnSignTxn     []*UnSignTransaction   `protobuf:"bytes,3,rep,name=un_sign_txn,json=unSignTxn,proto3" json:"un_sign_txn,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
 func (x *UnSignTransactionRequest) Reset() {
 	*x = UnSignTransactionRequest{}
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[7]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -512,7 +596,7 @@ func (x *UnSignTransactionRequest) String() string {
 func (*UnSignTransactionRequest) ProtoMessage() {}
 
 func (x *UnSignTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[7]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -525,7 +609,7 @@ func (x *UnSignTransactionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnSignTransactionRequest.ProtoReflect.Descriptor instead.
 func (*UnSignTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{7}
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UnSignTransactionRequest) GetConsumerToken() string {
@@ -542,82 +626,77 @@ func (x *UnSignTransactionRequest) GetRequestId() string {
 	return ""
 }
 
-func (x *UnSignTransactionRequest) GetChainId() string {
+func (x *UnSignTransactionRequest) GetUnSignTxn() []*UnSignTransaction {
 	if x != nil {
-		return x.ChainId
+		return x.UnSignTxn
+	}
+	return nil
+}
+
+type UnSignTransactionMessageHash struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TransactionId string                 `protobuf:"bytes,1,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	UnSignTx      string                 `protobuf:"bytes,2,opt,name=un_sign_tx,json=unSignTx,proto3" json:"un_sign_tx,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnSignTransactionMessageHash) Reset() {
+	*x = UnSignTransactionMessageHash{}
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnSignTransactionMessageHash) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnSignTransactionMessageHash) ProtoMessage() {}
+
+func (x *UnSignTransactionMessageHash) ProtoReflect() protoreflect.Message {
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnSignTransactionMessageHash.ProtoReflect.Descriptor instead.
+func (*UnSignTransactionMessageHash) Descriptor() ([]byte, []int) {
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *UnSignTransactionMessageHash) GetTransactionId() string {
+	if x != nil {
+		return x.TransactionId
 	}
 	return ""
 }
 
-func (x *UnSignTransactionRequest) GetChain() string {
+func (x *UnSignTransactionMessageHash) GetUnSignTx() string {
 	if x != nil {
-		return x.Chain
-	}
-	return ""
-}
-
-func (x *UnSignTransactionRequest) GetFrom() string {
-	if x != nil {
-		return x.From
-	}
-	return ""
-}
-
-func (x *UnSignTransactionRequest) GetTo() string {
-	if x != nil {
-		return x.To
-	}
-	return ""
-}
-
-func (x *UnSignTransactionRequest) GetValue() string {
-	if x != nil {
-		return x.Value
-	}
-	return ""
-}
-
-func (x *UnSignTransactionRequest) GetContractAddress() string {
-	if x != nil {
-		return x.ContractAddress
-	}
-	return ""
-}
-
-func (x *UnSignTransactionRequest) GetTokenId() string {
-	if x != nil {
-		return x.TokenId
-	}
-	return ""
-}
-
-func (x *UnSignTransactionRequest) GetTokenMeta() string {
-	if x != nil {
-		return x.TokenMeta
-	}
-	return ""
-}
-
-func (x *UnSignTransactionRequest) GetTxType() string {
-	if x != nil {
-		return x.TxType
+		return x.UnSignTx
 	}
 	return ""
 }
 
 type UnSignTransactionResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          ReturnCode             `protobuf:"varint,1,opt,name=code,proto3,enum=syncs.ReturnCode" json:"code,omitempty"`
-	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
-	TransactionId string                 `protobuf:"bytes,4,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
-	UnSignTx      string                 `protobuf:"bytes,5,opt,name=un_sign_tx,json=unSignTx,proto3" json:"un_sign_tx,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state            protoimpl.MessageState          `protogen:"open.v1"`
+	Code             ReturnCode                      `protobuf:"varint,1,opt,name=code,proto3,enum=syncs.ReturnCode" json:"code,omitempty"`
+	Msg              string                          `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	UnSignTxnMsgHash []*UnSignTransactionMessageHash `protobuf:"bytes,3,rep,name=un_sign_txn_msg_hash,json=unSignTxnMsgHash,proto3" json:"un_sign_txn_msg_hash,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *UnSignTransactionResponse) Reset() {
 	*x = UnSignTransactionResponse{}
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[8]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -629,7 +708,7 @@ func (x *UnSignTransactionResponse) String() string {
 func (*UnSignTransactionResponse) ProtoMessage() {}
 
 func (x *UnSignTransactionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[8]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -642,7 +721,7 @@ func (x *UnSignTransactionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnSignTransactionResponse.ProtoReflect.Descriptor instead.
 func (*UnSignTransactionResponse) Descriptor() ([]byte, []int) {
-	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{8}
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UnSignTransactionResponse) GetCode() ReturnCode {
@@ -659,16 +738,77 @@ func (x *UnSignTransactionResponse) GetMsg() string {
 	return ""
 }
 
-func (x *UnSignTransactionResponse) GetTransactionId() string {
+func (x *UnSignTransactionResponse) GetUnSignTxnMsgHash() []*UnSignTransactionMessageHash {
+	if x != nil {
+		return x.UnSignTxnMsgHash
+	}
+	return nil
+}
+
+type SignedTransaction struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ChainId       string                 `protobuf:"bytes,1,opt,name=chain_id,json=chainId,proto3" json:"chain_id,omitempty"`
+	TransactionId string                 `protobuf:"bytes,2,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	Signature     string                 `protobuf:"bytes,3,opt,name=signature,proto3" json:"signature,omitempty"`
+	TxType        string                 `protobuf:"bytes,4,opt,name=tx_type,json=txType,proto3" json:"tx_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SignedTransaction) Reset() {
+	*x = SignedTransaction{}
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SignedTransaction) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SignedTransaction) ProtoMessage() {}
+
+func (x *SignedTransaction) ProtoReflect() protoreflect.Message {
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SignedTransaction.ProtoReflect.Descriptor instead.
+func (*SignedTransaction) Descriptor() ([]byte, []int) {
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *SignedTransaction) GetChainId() string {
+	if x != nil {
+		return x.ChainId
+	}
+	return ""
+}
+
+func (x *SignedTransaction) GetTransactionId() string {
 	if x != nil {
 		return x.TransactionId
 	}
 	return ""
 }
 
-func (x *UnSignTransactionResponse) GetUnSignTx() string {
+func (x *SignedTransaction) GetSignature() string {
 	if x != nil {
-		return x.UnSignTx
+		return x.Signature
+	}
+	return ""
+}
+
+func (x *SignedTransaction) GetTxType() string {
+	if x != nil {
+		return x.TxType
 	}
 	return ""
 }
@@ -677,18 +817,14 @@ type SignedTransactionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ConsumerToken string                 `protobuf:"bytes,1,opt,name=consumer_token,json=consumerToken,proto3" json:"consumer_token,omitempty"`
 	RequestId     string                 `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	Chain         string                 `protobuf:"bytes,3,opt,name=chain,proto3" json:"chain,omitempty"`
-	ChainId       string                 `protobuf:"bytes,4,opt,name=chain_id,json=chainId,proto3" json:"chain_id,omitempty"`
-	TransactionId string                 `protobuf:"bytes,5,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
-	Signature     string                 `protobuf:"bytes,6,opt,name=signature,proto3" json:"signature,omitempty"`
-	TxType        string                 `protobuf:"bytes,7,opt,name=tx_type,json=txType,proto3" json:"tx_type,omitempty"`
+	SignedTxn     []*SignedTransaction   `protobuf:"bytes,3,rep,name=signed_txn,json=signedTxn,proto3" json:"signed_txn,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SignedTransactionRequest) Reset() {
 	*x = SignedTransactionRequest{}
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[9]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -700,7 +836,7 @@ func (x *SignedTransactionRequest) String() string {
 func (*SignedTransactionRequest) ProtoMessage() {}
 
 func (x *SignedTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[9]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -713,7 +849,7 @@ func (x *SignedTransactionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SignedTransactionRequest.ProtoReflect.Descriptor instead.
 func (*SignedTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{9}
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *SignedTransactionRequest) GetConsumerToken() string {
@@ -730,53 +866,85 @@ func (x *SignedTransactionRequest) GetRequestId() string {
 	return ""
 }
 
-func (x *SignedTransactionRequest) GetChain() string {
+func (x *SignedTransactionRequest) GetSignedTxn() []*SignedTransaction {
 	if x != nil {
-		return x.Chain
+		return x.SignedTxn
 	}
-	return ""
+	return nil
 }
 
-func (x *SignedTransactionRequest) GetChainId() string {
-	if x != nil {
-		return x.ChainId
-	}
-	return ""
+type SignedTransactionWithSignature struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TransactionId string                 `protobuf:"bytes,1,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	TxHash        string                 `protobuf:"bytes,2,opt,name=tx_hash,json=txHash,proto3" json:"tx_hash,omitempty"`
+	SignedTx      string                 `protobuf:"bytes,3,opt,name=signed_tx,json=signedTx,proto3" json:"signed_tx,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SignedTransactionRequest) GetTransactionId() string {
+func (x *SignedTransactionWithSignature) Reset() {
+	*x = SignedTransactionWithSignature{}
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SignedTransactionWithSignature) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SignedTransactionWithSignature) ProtoMessage() {}
+
+func (x *SignedTransactionWithSignature) ProtoReflect() protoreflect.Message {
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SignedTransactionWithSignature.ProtoReflect.Descriptor instead.
+func (*SignedTransactionWithSignature) Descriptor() ([]byte, []int) {
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *SignedTransactionWithSignature) GetTransactionId() string {
 	if x != nil {
 		return x.TransactionId
 	}
 	return ""
 }
 
-func (x *SignedTransactionRequest) GetSignature() string {
+func (x *SignedTransactionWithSignature) GetTxHash() string {
 	if x != nil {
-		return x.Signature
+		return x.TxHash
 	}
 	return ""
 }
 
-func (x *SignedTransactionRequest) GetTxType() string {
+func (x *SignedTransactionWithSignature) GetSignedTx() string {
 	if x != nil {
-		return x.TxType
+		return x.SignedTx
 	}
 	return ""
 }
 
 type SignedTransactionResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          ReturnCode             `protobuf:"varint,1,opt,name=code,proto3,enum=syncs.ReturnCode" json:"code,omitempty"`
-	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
-	SignedTx      string                 `protobuf:"bytes,3,opt,name=signed_tx,json=signedTx,proto3" json:"signed_tx,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState            `protogen:"open.v1"`
+	Code                   ReturnCode                        `protobuf:"varint,1,opt,name=code,proto3,enum=syncs.ReturnCode" json:"code,omitempty"`
+	Msg                    string                            `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	SignedTxnWithSignature []*SignedTransactionWithSignature `protobuf:"bytes,3,rep,name=signed_txn_with_signature,json=signedTxnWithSignature,proto3" json:"signed_txn_with_signature,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *SignedTransactionResponse) Reset() {
 	*x = SignedTransactionResponse{}
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[10]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -788,7 +956,7 @@ func (x *SignedTransactionResponse) String() string {
 func (*SignedTransactionResponse) ProtoMessage() {}
 
 func (x *SignedTransactionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[10]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -801,7 +969,7 @@ func (x *SignedTransactionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SignedTransactionResponse.ProtoReflect.Descriptor instead.
 func (*SignedTransactionResponse) Descriptor() ([]byte, []int) {
-	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{10}
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *SignedTransactionResponse) GetCode() ReturnCode {
@@ -818,24 +986,25 @@ func (x *SignedTransactionResponse) GetMsg() string {
 	return ""
 }
 
-func (x *SignedTransactionResponse) GetSignedTx() string {
+func (x *SignedTransactionResponse) GetSignedTxnWithSignature() []*SignedTransactionWithSignature {
 	if x != nil {
-		return x.SignedTx
+		return x.SignedTxnWithSignature
 	}
-	return ""
+	return nil
 }
 
 type SetTokenAddressRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	TokenList     []*Token               `protobuf:"bytes,2,rep,name=token_list,json=tokenList,proto3" json:"token_list,omitempty"`
+	ConsumerToken string                 `protobuf:"bytes,1,opt,name=consumer_token,json=consumerToken,proto3" json:"consumer_token,omitempty"`
+	RequestId     string                 `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	TokenList     []*Token               `protobuf:"bytes,3,rep,name=token_list,json=tokenList,proto3" json:"token_list,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SetTokenAddressRequest) Reset() {
 	*x = SetTokenAddressRequest{}
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[11]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -847,7 +1016,7 @@ func (x *SetTokenAddressRequest) String() string {
 func (*SetTokenAddressRequest) ProtoMessage() {}
 
 func (x *SetTokenAddressRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[11]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -860,7 +1029,14 @@ func (x *SetTokenAddressRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetTokenAddressRequest.ProtoReflect.Descriptor instead.
 func (*SetTokenAddressRequest) Descriptor() ([]byte, []int) {
-	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{11}
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *SetTokenAddressRequest) GetConsumerToken() string {
+	if x != nil {
+		return x.ConsumerToken
+	}
+	return ""
 }
 
 func (x *SetTokenAddressRequest) GetRequestId() string {
@@ -887,7 +1063,7 @@ type SetTokenAddressResponse struct {
 
 func (x *SetTokenAddressResponse) Reset() {
 	*x = SetTokenAddressResponse{}
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[12]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -899,7 +1075,7 @@ func (x *SetTokenAddressResponse) String() string {
 func (*SetTokenAddressResponse) ProtoMessage() {}
 
 func (x *SetTokenAddressResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[12]
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -912,7 +1088,7 @@ func (x *SetTokenAddressResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetTokenAddressResponse.ProtoReflect.Descriptor instead.
 func (*SetTokenAddressResponse) Descriptor() ([]byte, []int) {
-	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{12}
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *SetTokenAddressResponse) GetCode() ReturnCode {
@@ -923,6 +1099,210 @@ func (x *SetTokenAddressResponse) GetCode() ReturnCode {
 }
 
 func (x *SetTokenAddressResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+type Withdraw struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	ChainId         string                 `protobuf:"bytes,1,opt,name=chain_id,json=chainId,proto3" json:"chain_id,omitempty"`
+	From            string                 `protobuf:"bytes,2,opt,name=from,proto3" json:"from,omitempty"`
+	To              string                 `protobuf:"bytes,3,opt,name=to,proto3" json:"to,omitempty"`
+	Value           string                 `protobuf:"bytes,4,opt,name=value,proto3" json:"value,omitempty"`
+	ContractAddress string                 `protobuf:"bytes,5,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
+	TokenId         string                 `protobuf:"bytes,6,opt,name=token_id,json=tokenId,proto3" json:"token_id,omitempty"`
+	TokenMeta       string                 `protobuf:"bytes,7,opt,name=token_meta,json=tokenMeta,proto3" json:"token_meta,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *Withdraw) Reset() {
+	*x = Withdraw{}
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Withdraw) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Withdraw) ProtoMessage() {}
+
+func (x *Withdraw) ProtoReflect() protoreflect.Message {
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Withdraw.ProtoReflect.Descriptor instead.
+func (*Withdraw) Descriptor() ([]byte, []int) {
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *Withdraw) GetChainId() string {
+	if x != nil {
+		return x.ChainId
+	}
+	return ""
+}
+
+func (x *Withdraw) GetFrom() string {
+	if x != nil {
+		return x.From
+	}
+	return ""
+}
+
+func (x *Withdraw) GetTo() string {
+	if x != nil {
+		return x.To
+	}
+	return ""
+}
+
+func (x *Withdraw) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+func (x *Withdraw) GetContractAddress() string {
+	if x != nil {
+		return x.ContractAddress
+	}
+	return ""
+}
+
+func (x *Withdraw) GetTokenId() string {
+	if x != nil {
+		return x.TokenId
+	}
+	return ""
+}
+
+func (x *Withdraw) GetTokenMeta() string {
+	if x != nil {
+		return x.TokenMeta
+	}
+	return ""
+}
+
+type SubmitWithdrawRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ConsumerToken string                 `protobuf:"bytes,1,opt,name=consumer_token,json=consumerToken,proto3" json:"consumer_token,omitempty"`
+	RequestId     string                 `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	WithdrawList  []*Withdraw            `protobuf:"bytes,3,rep,name=withdraw_list,json=withdrawList,proto3" json:"withdraw_list,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubmitWithdrawRequest) Reset() {
+	*x = SubmitWithdrawRequest{}
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubmitWithdrawRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubmitWithdrawRequest) ProtoMessage() {}
+
+func (x *SubmitWithdrawRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubmitWithdrawRequest.ProtoReflect.Descriptor instead.
+func (*SubmitWithdrawRequest) Descriptor() ([]byte, []int) {
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *SubmitWithdrawRequest) GetConsumerToken() string {
+	if x != nil {
+		return x.ConsumerToken
+	}
+	return ""
+}
+
+func (x *SubmitWithdrawRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *SubmitWithdrawRequest) GetWithdrawList() []*Withdraw {
+	if x != nil {
+		return x.WithdrawList
+	}
+	return nil
+}
+
+type SubmitWithdrawResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          ReturnCode             `protobuf:"varint,1,opt,name=code,proto3,enum=syncs.ReturnCode" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubmitWithdrawResponse) Reset() {
+	*x = SubmitWithdrawResponse{}
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubmitWithdrawResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubmitWithdrawResponse) ProtoMessage() {}
+
+func (x *SubmitWithdrawResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_protobuf_dapplink_wallet_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubmitWithdrawResponse.ProtoReflect.Descriptor instead.
+func (*SubmitWithdrawResponse) Descriptor() ([]byte, []int) {
+	return file_protobuf_dapplink_wallet_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *SubmitWithdrawResponse) GetCode() ReturnCode {
+	if x != nil {
+		return x.Code
+	}
+	return ReturnCode_ERROR
+}
+
+func (x *SubmitWithdrawResponse) GetMsg() string {
 	if x != nil {
 		return x.Msg
 	}
@@ -967,59 +1347,85 @@ const file_protobuf_dapplink_wallet_proto_rawDesc = "" +
 	"\x17ExportAddressesResponse\x12%\n" +
 	"\x04Code\x18\x01 \x01(\x0e2\x11.syncs.ReturnCodeR\x04Code\x12\x10\n" +
 	"\x03msg\x18\x02 \x01(\tR\x03msg\x12,\n" +
-	"\taddresses\x18\x03 \x03(\v2\x0e.syncs.AddressR\taddresses\"\xc9\x02\n" +
+	"\taddresses\x18\x03 \x03(\v2\x0e.syncs.AddressR\taddresses\"\xcd\x01\n" +
+	"\x11UnSignTransaction\x12\x19\n" +
+	"\bchain_id\x18\x01 \x01(\tR\achainId\x12\x12\n" +
+	"\x04from\x18\x02 \x01(\tR\x04from\x12\x0e\n" +
+	"\x02to\x18\x03 \x01(\tR\x02to\x12\x14\n" +
+	"\x05value\x18\x04 \x01(\tR\x05value\x12)\n" +
+	"\x10contract_address\x18\x05 \x01(\tR\x0fcontractAddress\x12\x19\n" +
+	"\btoken_id\x18\x06 \x01(\tR\atokenId\x12\x1d\n" +
+	"\n" +
+	"token_meta\x18\a \x01(\tR\ttokenMeta\"\x9a\x01\n" +
 	"\x18UnSignTransactionRequest\x12%\n" +
 	"\x0econsumer_token\x18\x01 \x01(\tR\rconsumerToken\x12\x1d\n" +
 	"\n" +
-	"request_id\x18\x02 \x01(\tR\trequestId\x12\x19\n" +
-	"\bchain_id\x18\x03 \x01(\tR\achainId\x12\x14\n" +
-	"\x05chain\x18\x04 \x01(\tR\x05chain\x12\x12\n" +
-	"\x04from\x18\x05 \x01(\tR\x04from\x12\x0e\n" +
-	"\x02to\x18\x06 \x01(\tR\x02to\x12\x14\n" +
-	"\x05value\x18\a \x01(\tR\x05value\x12)\n" +
-	"\x10contract_address\x18\b \x01(\tR\x0fcontractAddress\x12\x19\n" +
-	"\btoken_id\x18\t \x01(\tR\atokenId\x12\x1d\n" +
+	"request_id\x18\x02 \x01(\tR\trequestId\x128\n" +
+	"\vun_sign_txn\x18\x03 \x03(\v2\x18.syncs.UnSignTransactionR\tunSignTxn\"c\n" +
+	"\x1cUnSignTransactionMessageHash\x12%\n" +
+	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12\x1c\n" +
 	"\n" +
-	"token_meta\x18\n" +
-	" \x01(\tR\ttokenMeta\x12\x17\n" +
-	"\atx_type\x18\v \x01(\tR\x06txType\"\x99\x01\n" +
+	"un_sign_tx\x18\x02 \x01(\tR\bunSignTx\"\xa9\x01\n" +
 	"\x19UnSignTransactionResponse\x12%\n" +
 	"\x04code\x18\x01 \x01(\x0e2\x11.syncs.ReturnCodeR\x04code\x12\x10\n" +
-	"\x03msg\x18\x02 \x01(\tR\x03msg\x12%\n" +
-	"\x0etransaction_id\x18\x04 \x01(\tR\rtransactionId\x12\x1c\n" +
-	"\n" +
-	"un_sign_tx\x18\x05 \x01(\tR\bunSignTx\"\xef\x01\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12S\n" +
+	"\x14un_sign_txn_msg_hash\x18\x03 \x03(\v2#.syncs.UnSignTransactionMessageHashR\x10unSignTxnMsgHash\"\x8c\x01\n" +
+	"\x11SignedTransaction\x12\x19\n" +
+	"\bchain_id\x18\x01 \x01(\tR\achainId\x12%\n" +
+	"\x0etransaction_id\x18\x02 \x01(\tR\rtransactionId\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\tR\tsignature\x12\x17\n" +
+	"\atx_type\x18\x04 \x01(\tR\x06txType\"\x99\x01\n" +
 	"\x18SignedTransactionRequest\x12%\n" +
 	"\x0econsumer_token\x18\x01 \x01(\tR\rconsumerToken\x12\x1d\n" +
 	"\n" +
-	"request_id\x18\x02 \x01(\tR\trequestId\x12\x14\n" +
-	"\x05chain\x18\x03 \x01(\tR\x05chain\x12\x19\n" +
-	"\bchain_id\x18\x04 \x01(\tR\achainId\x12%\n" +
-	"\x0etransaction_id\x18\x05 \x01(\tR\rtransactionId\x12\x1c\n" +
-	"\tsignature\x18\x06 \x01(\tR\tsignature\x12\x17\n" +
-	"\atx_type\x18\a \x01(\tR\x06txType\"q\n" +
+	"request_id\x18\x02 \x01(\tR\trequestId\x127\n" +
+	"\n" +
+	"signed_txn\x18\x03 \x03(\v2\x18.syncs.SignedTransactionR\tsignedTxn\"}\n" +
+	"\x1eSignedTransactionWithSignature\x12%\n" +
+	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12\x17\n" +
+	"\atx_hash\x18\x02 \x01(\tR\x06txHash\x12\x1b\n" +
+	"\tsigned_tx\x18\x03 \x01(\tR\bsignedTx\"\xb6\x01\n" +
 	"\x19SignedTransactionResponse\x12%\n" +
 	"\x04code\x18\x01 \x01(\x0e2\x11.syncs.ReturnCodeR\x04code\x12\x10\n" +
-	"\x03msg\x18\x02 \x01(\tR\x03msg\x12\x1b\n" +
-	"\tsigned_tx\x18\x03 \x01(\tR\bsignedTx\"d\n" +
-	"\x16SetTokenAddressRequest\x12\x1d\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12`\n" +
+	"\x19signed_txn_with_signature\x18\x03 \x03(\v2%.syncs.SignedTransactionWithSignatureR\x16signedTxnWithSignature\"\x8b\x01\n" +
+	"\x16SetTokenAddressRequest\x12%\n" +
+	"\x0econsumer_token\x18\x01 \x01(\tR\rconsumerToken\x12\x1d\n" +
 	"\n" +
-	"request_id\x18\x01 \x01(\tR\trequestId\x12+\n" +
+	"request_id\x18\x02 \x01(\tR\trequestId\x12+\n" +
 	"\n" +
-	"token_list\x18\x02 \x03(\v2\f.syncs.TokenR\ttokenList\"R\n" +
+	"token_list\x18\x03 \x03(\v2\f.syncs.TokenR\ttokenList\"R\n" +
 	"\x17SetTokenAddressResponse\x12%\n" +
+	"\x04code\x18\x01 \x01(\x0e2\x11.syncs.ReturnCodeR\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"\xc4\x01\n" +
+	"\bWithdraw\x12\x19\n" +
+	"\bchain_id\x18\x01 \x01(\tR\achainId\x12\x12\n" +
+	"\x04from\x18\x02 \x01(\tR\x04from\x12\x0e\n" +
+	"\x02to\x18\x03 \x01(\tR\x02to\x12\x14\n" +
+	"\x05value\x18\x04 \x01(\tR\x05value\x12)\n" +
+	"\x10contract_address\x18\x05 \x01(\tR\x0fcontractAddress\x12\x19\n" +
+	"\btoken_id\x18\x06 \x01(\tR\atokenId\x12\x1d\n" +
+	"\n" +
+	"token_meta\x18\a \x01(\tR\ttokenMeta\"\x93\x01\n" +
+	"\x15SubmitWithdrawRequest\x12%\n" +
+	"\x0econsumer_token\x18\x01 \x01(\tR\rconsumerToken\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x02 \x01(\tR\trequestId\x124\n" +
+	"\rwithdraw_list\x18\x03 \x03(\v2\x0f.syncs.WithdrawR\fwithdrawList\"Q\n" +
+	"\x16SubmitWithdrawResponse\x12%\n" +
 	"\x04code\x18\x01 \x01(\x0e2\x11.syncs.ReturnCodeR\x04code\x12\x10\n" +
 	"\x03msg\x18\x02 \x01(\tR\x03msg*$\n" +
 	"\n" +
 	"ReturnCode\x12\t\n" +
 	"\x05ERROR\x10\x00\x12\v\n" +
-	"\aSUCCESS\x10\x012\xe5\x03\n" +
+	"\aSUCCESS\x10\x012\xb6\x04\n" +
 	"\x1aBusinessMiddleWireServices\x12U\n" +
 	"\x10businessRegister\x12\x1e.syncs.BusinessRegisterRequest\x1a\x1f.syncs.BusinessRegisterResponse\"\x00\x12^\n" +
 	"\x1bexportAddressesByPublicKeys\x12\x1d.syncs.ExportAddressesRequest\x1a\x1e.syncs.ExportAddressesResponse\"\x00\x12]\n" +
 	"\x16buildUnSignTransaction\x12\x1f.syncs.UnSignTransactionRequest\x1a .syncs.UnSignTransactionResponse\"\x00\x12]\n" +
 	"\x16buildSignedTransaction\x12\x1f.syncs.SignedTransactionRequest\x1a .syncs.SignedTransactionResponse\"\x00\x12R\n" +
-	"\x0fsetTokenAddress\x12\x1d.syncs.SetTokenAddressRequest\x1a\x1e.syncs.SetTokenAddressResponse\"\x00B\x13Z\x11./protobuf/walletb\x06proto3"
+	"\x0fsetTokenAddress\x12\x1d.syncs.SetTokenAddressRequest\x1a\x1e.syncs.SetTokenAddressResponse\"\x00\x12O\n" +
+	"\x0esubmitWithdraw\x12\x1c.syncs.SubmitWithdrawRequest\x1a\x1d.syncs.SubmitWithdrawResponse\"\x00B\x13Z\x11./protobuf/walletb\x06proto3"
 
 var (
 	file_protobuf_dapplink_wallet_proto_rawDescOnce sync.Once
@@ -1034,47 +1440,62 @@ func file_protobuf_dapplink_wallet_proto_rawDescGZIP() []byte {
 }
 
 var file_protobuf_dapplink_wallet_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_protobuf_dapplink_wallet_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_protobuf_dapplink_wallet_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_protobuf_dapplink_wallet_proto_goTypes = []any{
-	(ReturnCode)(0),                   // 0: syncs.ReturnCode
-	(*PublicKey)(nil),                 // 1: syncs.PublicKey
-	(*Address)(nil),                   // 2: syncs.Address
-	(*Token)(nil),                     // 3: syncs.Token
-	(*BusinessRegisterRequest)(nil),   // 4: syncs.BusinessRegisterRequest
-	(*BusinessRegisterResponse)(nil),  // 5: syncs.BusinessRegisterResponse
-	(*ExportAddressesRequest)(nil),    // 6: syncs.ExportAddressesRequest
-	(*ExportAddressesResponse)(nil),   // 7: syncs.ExportAddressesResponse
-	(*UnSignTransactionRequest)(nil),  // 8: syncs.UnSignTransactionRequest
-	(*UnSignTransactionResponse)(nil), // 9: syncs.UnSignTransactionResponse
-	(*SignedTransactionRequest)(nil),  // 10: syncs.SignedTransactionRequest
-	(*SignedTransactionResponse)(nil), // 11: syncs.SignedTransactionResponse
-	(*SetTokenAddressRequest)(nil),    // 12: syncs.SetTokenAddressRequest
-	(*SetTokenAddressResponse)(nil),   // 13: syncs.SetTokenAddressResponse
+	(ReturnCode)(0),                        // 0: syncs.ReturnCode
+	(*PublicKey)(nil),                      // 1: syncs.PublicKey
+	(*Address)(nil),                        // 2: syncs.Address
+	(*Token)(nil),                          // 3: syncs.Token
+	(*BusinessRegisterRequest)(nil),        // 4: syncs.BusinessRegisterRequest
+	(*BusinessRegisterResponse)(nil),       // 5: syncs.BusinessRegisterResponse
+	(*ExportAddressesRequest)(nil),         // 6: syncs.ExportAddressesRequest
+	(*ExportAddressesResponse)(nil),        // 7: syncs.ExportAddressesResponse
+	(*UnSignTransaction)(nil),              // 8: syncs.UnSignTransaction
+	(*UnSignTransactionRequest)(nil),       // 9: syncs.UnSignTransactionRequest
+	(*UnSignTransactionMessageHash)(nil),   // 10: syncs.UnSignTransactionMessageHash
+	(*UnSignTransactionResponse)(nil),      // 11: syncs.UnSignTransactionResponse
+	(*SignedTransaction)(nil),              // 12: syncs.SignedTransaction
+	(*SignedTransactionRequest)(nil),       // 13: syncs.SignedTransactionRequest
+	(*SignedTransactionWithSignature)(nil), // 14: syncs.SignedTransactionWithSignature
+	(*SignedTransactionResponse)(nil),      // 15: syncs.SignedTransactionResponse
+	(*SetTokenAddressRequest)(nil),         // 16: syncs.SetTokenAddressRequest
+	(*SetTokenAddressResponse)(nil),        // 17: syncs.SetTokenAddressResponse
+	(*Withdraw)(nil),                       // 18: syncs.Withdraw
+	(*SubmitWithdrawRequest)(nil),          // 19: syncs.SubmitWithdrawRequest
+	(*SubmitWithdrawResponse)(nil),         // 20: syncs.SubmitWithdrawResponse
 }
 var file_protobuf_dapplink_wallet_proto_depIdxs = []int32{
 	0,  // 0: syncs.BusinessRegisterResponse.Code:type_name -> syncs.ReturnCode
 	1,  // 1: syncs.ExportAddressesRequest.public_keys:type_name -> syncs.PublicKey
 	0,  // 2: syncs.ExportAddressesResponse.Code:type_name -> syncs.ReturnCode
 	2,  // 3: syncs.ExportAddressesResponse.addresses:type_name -> syncs.Address
-	0,  // 4: syncs.UnSignTransactionResponse.code:type_name -> syncs.ReturnCode
-	0,  // 5: syncs.SignedTransactionResponse.code:type_name -> syncs.ReturnCode
-	3,  // 6: syncs.SetTokenAddressRequest.token_list:type_name -> syncs.Token
-	0,  // 7: syncs.SetTokenAddressResponse.code:type_name -> syncs.ReturnCode
-	4,  // 8: syncs.BusinessMiddleWireServices.businessRegister:input_type -> syncs.BusinessRegisterRequest
-	6,  // 9: syncs.BusinessMiddleWireServices.exportAddressesByPublicKeys:input_type -> syncs.ExportAddressesRequest
-	8,  // 10: syncs.BusinessMiddleWireServices.buildUnSignTransaction:input_type -> syncs.UnSignTransactionRequest
-	10, // 11: syncs.BusinessMiddleWireServices.buildSignedTransaction:input_type -> syncs.SignedTransactionRequest
-	12, // 12: syncs.BusinessMiddleWireServices.setTokenAddress:input_type -> syncs.SetTokenAddressRequest
-	5,  // 13: syncs.BusinessMiddleWireServices.businessRegister:output_type -> syncs.BusinessRegisterResponse
-	7,  // 14: syncs.BusinessMiddleWireServices.exportAddressesByPublicKeys:output_type -> syncs.ExportAddressesResponse
-	9,  // 15: syncs.BusinessMiddleWireServices.buildUnSignTransaction:output_type -> syncs.UnSignTransactionResponse
-	11, // 16: syncs.BusinessMiddleWireServices.buildSignedTransaction:output_type -> syncs.SignedTransactionResponse
-	13, // 17: syncs.BusinessMiddleWireServices.setTokenAddress:output_type -> syncs.SetTokenAddressResponse
-	13, // [13:18] is the sub-list for method output_type
-	8,  // [8:13] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	8,  // 4: syncs.UnSignTransactionRequest.un_sign_txn:type_name -> syncs.UnSignTransaction
+	0,  // 5: syncs.UnSignTransactionResponse.code:type_name -> syncs.ReturnCode
+	10, // 6: syncs.UnSignTransactionResponse.un_sign_txn_msg_hash:type_name -> syncs.UnSignTransactionMessageHash
+	12, // 7: syncs.SignedTransactionRequest.signed_txn:type_name -> syncs.SignedTransaction
+	0,  // 8: syncs.SignedTransactionResponse.code:type_name -> syncs.ReturnCode
+	14, // 9: syncs.SignedTransactionResponse.signed_txn_with_signature:type_name -> syncs.SignedTransactionWithSignature
+	3,  // 10: syncs.SetTokenAddressRequest.token_list:type_name -> syncs.Token
+	0,  // 11: syncs.SetTokenAddressResponse.code:type_name -> syncs.ReturnCode
+	18, // 12: syncs.SubmitWithdrawRequest.withdraw_list:type_name -> syncs.Withdraw
+	0,  // 13: syncs.SubmitWithdrawResponse.code:type_name -> syncs.ReturnCode
+	4,  // 14: syncs.BusinessMiddleWireServices.businessRegister:input_type -> syncs.BusinessRegisterRequest
+	6,  // 15: syncs.BusinessMiddleWireServices.exportAddressesByPublicKeys:input_type -> syncs.ExportAddressesRequest
+	9,  // 16: syncs.BusinessMiddleWireServices.buildUnSignTransaction:input_type -> syncs.UnSignTransactionRequest
+	13, // 17: syncs.BusinessMiddleWireServices.buildSignedTransaction:input_type -> syncs.SignedTransactionRequest
+	16, // 18: syncs.BusinessMiddleWireServices.setTokenAddress:input_type -> syncs.SetTokenAddressRequest
+	19, // 19: syncs.BusinessMiddleWireServices.submitWithdraw:input_type -> syncs.SubmitWithdrawRequest
+	5,  // 20: syncs.BusinessMiddleWireServices.businessRegister:output_type -> syncs.BusinessRegisterResponse
+	7,  // 21: syncs.BusinessMiddleWireServices.exportAddressesByPublicKeys:output_type -> syncs.ExportAddressesResponse
+	11, // 22: syncs.BusinessMiddleWireServices.buildUnSignTransaction:output_type -> syncs.UnSignTransactionResponse
+	15, // 23: syncs.BusinessMiddleWireServices.buildSignedTransaction:output_type -> syncs.SignedTransactionResponse
+	17, // 24: syncs.BusinessMiddleWireServices.setTokenAddress:output_type -> syncs.SetTokenAddressResponse
+	20, // 25: syncs.BusinessMiddleWireServices.submitWithdraw:output_type -> syncs.SubmitWithdrawResponse
+	20, // [20:26] is the sub-list for method output_type
+	14, // [14:20] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_protobuf_dapplink_wallet_proto_init() }
@@ -1088,7 +1509,7 @@ func file_protobuf_dapplink_wallet_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_protobuf_dapplink_wallet_proto_rawDesc), len(file_protobuf_dapplink_wallet_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   13,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

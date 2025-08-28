@@ -1,4 +1,4 @@
-package services
+package rpc
 
 import (
 	"context"
@@ -6,13 +6,13 @@ import (
 	"net"
 	"sync/atomic"
 
+	"github.com/ethereum/go-ethereum/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/ethereum/go-ethereum/log"
-
 	"github.com/huahaiwudi/multichain-sync-account/database"
 	"github.com/huahaiwudi/multichain-sync-account/protobuf/wallet"
+	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient"
 )
 
 const MaxRecvMessageSize = 1024 * 1024 * 300
@@ -20,12 +20,15 @@ const MaxRecvMessageSize = 1024 * 1024 * 300
 type BusinessMiddleConfig struct {
 	GrpcHostname string
 	GrpcPort     int
+	ChainName    string
+	NetWork      string
 }
 
 type BusinessMiddleWireServices struct {
 	*BusinessMiddleConfig
-	db      *database.DB
-	stopped atomic.Bool
+	accountRpcClient *syncclient.ChainAccountRpcClient
+	db               *database.DB
+	stopped          atomic.Bool
 }
 
 func (bws *BusinessMiddleWireServices) Stop(ctx context.Context) error {
@@ -37,9 +40,10 @@ func (bws *BusinessMiddleWireServices) Stopped() bool {
 	return bws.stopped.Load()
 }
 
-func NewBusinessMiddleWireServices(db *database.DB, config *BusinessMiddleConfig) (*BusinessMiddleWireServices, error) {
+func NewBusinessMiddleWireServices(db *database.DB, config *BusinessMiddleConfig, accountRpcClient *syncclient.ChainAccountRpcClient) (*BusinessMiddleWireServices, error) {
 	return &BusinessMiddleWireServices{
 		BusinessMiddleConfig: config,
+		accountRpcClient:     accountRpcClient,
 		db:                   db,
 	}, nil
 }

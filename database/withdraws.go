@@ -31,6 +31,7 @@ type Withdraws struct {
 
 	// Gas 费用
 	GasLimit             uint64 `json:"gas_limit"`
+	Nonce                uint64 `json:"nonce"`
 	MaxFeePerGas         string `json:"max_fee_per_gas"`
 	MaxPriorityFeePerGas string `json:"max_priority_fee_per_gas"`
 
@@ -42,6 +43,8 @@ type Withdraws struct {
 
 	// 交易签名
 	TxSignHex string `json:"tx_sign_hex" gorm:"column:tx_sign_hex"`
+	// 判断是否为自签名
+	SelfSign bool `json:"self_sign" gorm:"column:self_sign"`
 }
 
 type WithdrawsView interface {
@@ -49,16 +52,18 @@ type WithdrawsView interface {
 	QueryWithdrawsByHash(requestId string, txHash common.Hash) (*Withdraws, error)
 	QueryWithdrawsById(requestId string, guid string) (*Withdraws, error)
 	UnSendWithdrawsList(requestId string) ([]*Withdraws, error)
+	QueryNeedWithdrawsList(requestId string) ([]*Withdraws, error)
 }
 
 type WithdrawsDB interface {
 	WithdrawsView
 
 	StoreWithdraw(requestId string, withdraw *Withdraws) error
+	StoreWithdraws(requestId string, withdraws []Withdraws) error
 	UpdateWithdrawByTxHash(requestId string, txHash common.Hash, signedTx string, status TxStatus) error
 	UpdateWithdrawById(requestId string, guid string, signedTx string, status TxStatus) error
 	UpdateWithdrawStatusById(requestId string, status TxStatus, withdrawsList []*Withdraws) error
-	UpdateWithdrawStatusByTxHash(requestId string, status TxStatus, withdrawsList []*Withdraws) error
+	UpdateWithdrawStatusByTxHash(requestId string, withdrawsList []*Withdraws) error
 	UpdateWithdrawListByTxHash(requestId string, withdrawsList []*Withdraws) error
 	UpdateWithdrawListById(requestId string, withdrawsList []*Withdraws) error
 	HandleFallBackWithdraw(requestId string, startBlock, EndBlock *big.Int) error
@@ -70,8 +75,20 @@ type withdrawsDB struct {
 
 func (db *withdrawsDB) QueryNotifyWithdraws(requestId string) ([]*Withdraws, error) {
 	var notifyWithdraws []*Withdraws
+
+	txStatusList := [8]TxStatus{
+		TxStatusSent,
+		TxStatusWithdrawed,
+		TxStatusSentNotifyFail,
+		TxStatusWithdrawedNotifyFail,
+		TxStatusFallback,
+		TxStatusFinalizedNotifyFail,
+	}
+
 	result := db.gorm.Table("withdraws_"+requestId).
-		Where("status = ? or status = ?", TxStatusWalletDone, TxStatusNotified).
+		Where("status IN ?",
+			txStatusList,
+		).
 		Find(&notifyWithdraws)
 
 	if result.Error != nil {
@@ -84,7 +101,7 @@ func (db *withdrawsDB) QueryNotifyWithdraws(requestId string) ([]*Withdraws, err
 func (db *withdrawsDB) UnSendWithdrawsList(requestId string) ([]*Withdraws, error) {
 	var withdrawsList []*Withdraws
 	err := db.gorm.Table("withdraws_"+requestId).
-		Where("status = ?", TxStatusSigned).
+		Where("status = ?", TxStatusUnSent).
 		Find(&withdrawsList).Error
 
 	if err != nil {
@@ -92,6 +109,15 @@ func (db *withdrawsDB) UnSendWithdrawsList(requestId string) ([]*Withdraws, erro
 	}
 
 	return withdrawsList, nil
+}
+
+func (db *withdrawsDB) QueryNeedWithdrawsList(requestId string) ([]*Withdraws, error) {
+	var needWithdrawsList []*Withdraws
+	err := db.gorm.Table("withdraws_"+requestId).Where("status = ? and self_sign = ?", TxStatusWaitSign, true).Find(&needWithdrawsList).Error
+	if err != nil {
+		return nil, fmt.Errorf("query need withdraws failed: %w", err)
+	}
+	return needWithdrawsList, nil
 }
 
 func (db *withdrawsDB) QueryWithdrawsById(requestId string, guid string) (*Withdraws, error) {
@@ -188,6 +214,10 @@ func (db *withdrawsDB) StoreWithdraw(requestId string, withdraw *Withdraws) erro
 	return db.gorm.Table("withdraws_" + requestId).Create(&withdraw).Error
 }
 
+func (db *withdrawsDB) StoreWithdraws(requestId string, withdrawList []Withdraws) error {
+	return db.gorm.Table("withdraws_"+requestId).CreateInBatches(withdrawList, len(withdrawList)).Error
+}
+
 func (db *withdrawsDB) UpdateWithdrawStatusById(requestId string, status TxStatus, withdrawsList []*Withdraws) error {
 	if len(withdrawsList) == 0 {
 		return nil
@@ -225,41 +255,20 @@ func (db *withdrawsDB) UpdateWithdrawStatusById(requestId string, status TxStatu
 	})
 }
 
-func (db *withdrawsDB) UpdateWithdrawStatusByTxHash(requestId string, status TxStatus, withdrawsList []*Withdraws) error {
-	if len(withdrawsList) == 0 {
-		return nil
+func (db *withdrawsDB) UpdateWithdrawStatusByTxHash(requestId string, withdrawsList []*Withdraws) error {
+	for _, withdrawItem := range withdrawsList {
+		var withdrawTx Withdraws
+		err := db.gorm.Table("withdraws_"+requestId).Where("hash=?", withdrawItem.TxHash.String()).Take(&withdrawTx).Error
+		if err != nil {
+			log.Error("query data fail", "err", err)
+			return err
+		}
+		withdrawTx.Status = withdrawItem.Status
+		if err := db.gorm.Table("withdraws_" + requestId).Save(&withdrawTx).Error; err != nil {
+			return err
+		}
 	}
-	tableName := fmt.Sprintf("withdraws_%s", requestId)
-
-	return db.gorm.Transaction(func(tx *gorm.DB) error {
-		var txHashList []string
-		for _, withdraw := range withdrawsList {
-			txHashList = append(txHashList, withdraw.TxHash.String())
-		}
-
-		result := tx.Table(tableName).
-			Where("hash IN ?", txHashList).
-			Update("status", status)
-
-		if result.Error != nil {
-			return fmt.Errorf("batch update status failed: %w", result.Error)
-		}
-
-		if result.RowsAffected == 0 {
-			log.Warn("No withdraws updated",
-				"requestId", requestId,
-				"expectedCount", len(withdrawsList),
-			)
-		}
-
-		log.Info("Batch update withdraws status success",
-			"requestId", requestId,
-			"count", result.RowsAffected,
-			"status", status,
-		)
-
-		return nil
-	})
+	return nil
 }
 
 func (db *withdrawsDB) UpdateWithdrawListByTxHash(requestId string, withdrawsList []*Withdraws) error {

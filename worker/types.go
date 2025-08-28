@@ -1,4 +1,4 @@
-package services
+package worker
 
 type Eip1559DynamicFeeTx struct {
 	ChainId              string `json:"chain_id"`

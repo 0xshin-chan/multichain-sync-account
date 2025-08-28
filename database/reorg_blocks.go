@@ -4,12 +4,11 @@ import (
 	"errors"
 	"math/big"
 
-	"gorm.io/gorm"
-
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
+	"gorm.io/gorm"
 
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient"
+	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient"
 )
 
 type ReorgBlocks struct {
@@ -19,8 +18,8 @@ type ReorgBlocks struct {
 	Timestamp  uint64
 }
 
-func ReorgBlockHeaderFromHeader(header *types.Header) rpcclient.BlockHeader {
-	return rpcclient.BlockHeader{
+func ReorgBlockHeaderFromHeader(header *types.Header) syncclient.BlockHeader {
+	return syncclient.BlockHeader{
 		Hash:       header.Hash(),
 		ParentHash: header.ParentHash,
 		Number:     header.Number,
@@ -29,7 +28,7 @@ func ReorgBlockHeaderFromHeader(header *types.Header) rpcclient.BlockHeader {
 }
 
 type ReorgBlocksView interface {
-	LatestReorgBlocks() (*rpcclient.BlockHeader, error)
+	LatestReorgBlocks() (*syncclient.BlockHeader, error)
 }
 
 type ReorgBlocksDB interface {
@@ -51,7 +50,7 @@ func (db *reorgBlocksDB) StoreReorgBlocks(headers []ReorgBlocks) error {
 	return result.Error
 }
 
-func (db *reorgBlocksDB) LatestReorgBlocks() (*rpcclient.BlockHeader, error) {
+func (db *reorgBlocksDB) LatestReorgBlocks() (*syncclient.BlockHeader, error) {
 	var header ReorgBlocks
 	result := db.gorm.Order("number DESC").Take(&header)
 	if result.Error != nil {
@@ -60,5 +59,5 @@ func (db *reorgBlocksDB) LatestReorgBlocks() (*rpcclient.BlockHeader, error) {
 		}
 		return nil, result.Error
 	}
-	return (*rpcclient.BlockHeader)(&header), nil
+	return (*syncclient.BlockHeader)(&header), nil
 }
