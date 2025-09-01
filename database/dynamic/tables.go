@@ -3,7 +3,7 @@ package dynamic
 import (
 	"fmt"
 
-	"github.com/huahaiwudi/multichain-sync-account/database"
+	"github.com/0xshin-chan/multichain-sync-account/database"
 )
 
 func CreateTableFromTemplate(requestId string, db *database.DB) {

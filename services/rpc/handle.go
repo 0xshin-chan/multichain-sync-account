@@ -12,11 +12,11 @@ import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/google/uuid"
 
-	"github.com/huahaiwudi/multichain-sync-account/common/json2"
-	"github.com/huahaiwudi/multichain-sync-account/database"
-	"github.com/huahaiwudi/multichain-sync-account/database/dynamic"
-	"github.com/huahaiwudi/multichain-sync-account/protobuf/wallet"
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient/account"
+	"github.com/0xshin-chan/multichain-sync-account/common/json2"
+	"github.com/0xshin-chan/multichain-sync-account/database"
+	"github.com/0xshin-chan/multichain-sync-account/database/dynamic"
+	"github.com/0xshin-chan/multichain-sync-account/protobuf/wallet"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/syncclient/account"
 )
 
 const (

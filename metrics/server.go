@@ -7,7 +7,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
-	"github.com/huahaiwudi/multichain-sync-account/common/httputil"
+	"github.com/0xshin-chan/multichain-sync-account/common/httputil"
 )
 
 func StartServer(r *prometheus.Registry, hostname string, port int) (*httputil.HTTPServer, error) {

@@ -14,12 +14,12 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/huahaiwudi/multichain-sync-account/cache"
-	"github.com/huahaiwudi/multichain-sync-account/common/httputil"
-	"github.com/huahaiwudi/multichain-sync-account/config"
-	"github.com/huahaiwudi/multichain-sync-account/metrics"
-	"github.com/huahaiwudi/multichain-sync-account/services/http/routes"
-	"github.com/huahaiwudi/multichain-sync-account/services/http/service"
+	"github.com/0xshin-chan/multichain-sync-account/cache"
+	"github.com/0xshin-chan/multichain-sync-account/common/httputil"
+	"github.com/0xshin-chan/multichain-sync-account/config"
+	"github.com/0xshin-chan/multichain-sync-account/metrics"
+	"github.com/0xshin-chan/multichain-sync-account/services/http/routes"
+	"github.com/0xshin-chan/multichain-sync-account/services/http/service"
 )
 
 const (

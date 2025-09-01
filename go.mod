@@ -1,4 +1,4 @@
-module github.com/huahaiwudi/multichain-sync-account
+module github.com/0xshin-chan/multichain-sync-account
 
 go 1.23.4
 

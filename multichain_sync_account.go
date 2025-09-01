@@ -2,17 +2,17 @@ package multichain_syncs6_account
 
 import (
 	"context"
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient"
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient/account"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/syncclient"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/syncclient/account"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"sync/atomic"
 
+	"github.com/0xshin-chan/multichain-sync-account/config"
+	"github.com/0xshin-chan/multichain-sync-account/database"
+	"github.com/0xshin-chan/multichain-sync-account/worker"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/huahaiwudi/multichain-sync-account/config"
-	"github.com/huahaiwudi/multichain-sync-account/database"
-	"github.com/huahaiwudi/multichain-sync-account/worker"
 )
 
 // MultiChainSync 用于统一管理多链同步相关的子模块：存款、提现、内部转账、回滚。

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/huahaiwudi/multichain-sync-account/common/opio"
+	"github.com/0xshin-chan/multichain-sync-account/common/opio"
 	"github.com/urfave/cli/v2"
 )
 

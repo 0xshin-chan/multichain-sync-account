@@ -5,7 +5,7 @@ import (
 
 	lru "github.com/hashicorp/golang-lru"
 
-	"github.com/huahaiwudi/multichain-sync-account/services/http/models"
+	"github.com/0xshin-chan/multichain-sync-account/services/http/models"
 )
 
 // ListSize lru缓存的容量，最多缓存 120 万条记录

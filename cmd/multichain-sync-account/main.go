@@ -6,7 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/log"
 
-	"github.com/huahaiwudi/multichain-sync-account/common/opio"
+	"github.com/0xshin-chan/multichain-sync-account/common/opio"
 )
 
 var (

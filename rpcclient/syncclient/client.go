@@ -8,7 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/log"
 
-	account2 "github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient/account"
+	account2 "github.com/0xshin-chan/multichain-sync-account/rpcclient/syncclient/account"
 )
 
 type ChainAccountRpcClient struct {

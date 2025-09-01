@@ -9,12 +9,12 @@ import (
 
 	"github.com/ethereum/go-ethereum/log"
 
-	"github.com/huahaiwudi/multichain-sync-account/common/bigint"
-	"github.com/huahaiwudi/multichain-sync-account/common/retry"
-	"github.com/huahaiwudi/multichain-sync-account/common/tasks"
-	"github.com/huahaiwudi/multichain-sync-account/config"
-	"github.com/huahaiwudi/multichain-sync-account/database"
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient"
+	"github.com/0xshin-chan/multichain-sync-account/common/bigint"
+	"github.com/0xshin-chan/multichain-sync-account/common/retry"
+	"github.com/0xshin-chan/multichain-sync-account/common/tasks"
+	"github.com/0xshin-chan/multichain-sync-account/config"
+	"github.com/0xshin-chan/multichain-sync-account/database"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/syncclient"
 )
 
 type FallBack struct {

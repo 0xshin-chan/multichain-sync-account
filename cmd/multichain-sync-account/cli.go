@@ -10,17 +10,17 @@ import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/urfave/cli/v2"
 
-	multichain_sync_account "github.com/huahaiwudi/multichain-sync-account"
-	"github.com/huahaiwudi/multichain-sync-account/common/cliapp"
-	"github.com/huahaiwudi/multichain-sync-account/common/opio"
-	"github.com/huahaiwudi/multichain-sync-account/config"
-	"github.com/huahaiwudi/multichain-sync-account/database"
-	flags2 "github.com/huahaiwudi/multichain-sync-account/flags"
-	http2 "github.com/huahaiwudi/multichain-sync-account/notifier/http"
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient"
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient/account"
-	"github.com/huahaiwudi/multichain-sync-account/services/http"
-	"github.com/huahaiwudi/multichain-sync-account/services/rpc"
+	multichain_sync_account "github.com/0xshin-chan/multichain-sync-account"
+	"github.com/0xshin-chan/multichain-sync-account/common/cliapp"
+	"github.com/0xshin-chan/multichain-sync-account/common/opio"
+	"github.com/0xshin-chan/multichain-sync-account/config"
+	"github.com/0xshin-chan/multichain-sync-account/database"
+	flags2 "github.com/0xshin-chan/multichain-sync-account/flags"
+	http2 "github.com/0xshin-chan/multichain-sync-account/notifier/http"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/syncclient"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/syncclient/account"
+	"github.com/0xshin-chan/multichain-sync-account/services/http"
+	"github.com/0xshin-chan/multichain-sync-account/services/rpc"
 )
 
 const (

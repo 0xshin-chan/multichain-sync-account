@@ -6,7 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/log"
 
-	"github.com/huahaiwudi/multichain-sync-account/services/http/models"
+	"github.com/0xshin-chan/multichain-sync-account/services/http/models"
 )
 
 func (h Routes) GasFeeHandler(w http.ResponseWriter, r *http.Request) {

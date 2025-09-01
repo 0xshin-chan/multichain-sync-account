@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"github.com/huahaiwudi/multichain-sync-account/database"
+	"github.com/0xshin-chan/multichain-sync-account/database"
 )
 
 type FeeInfo struct {

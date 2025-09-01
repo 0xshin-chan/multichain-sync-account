@@ -5,7 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/log"
 
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/signclient/wallet"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/signclient/wallet"
 )
 
 type SignMachineRpcClient struct {

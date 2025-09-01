@@ -1,6 +1,6 @@
 package http
 
-import "github.com/huahaiwudi/multichain-sync-account/database"
+import "github.com/0xshin-chan/multichain-sync-account/database"
 
 // =========业务通知==========
 type NotifyRequest struct {

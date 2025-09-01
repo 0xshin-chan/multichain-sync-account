@@ -7,7 +7,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/log"
 
-	"github.com/huahaiwudi/multichain-sync-account/common/bigint"
+	"github.com/0xshin-chan/multichain-sync-account/common/bigint"
 )
 
 var (

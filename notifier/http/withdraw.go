@@ -9,9 +9,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/log"
 
-	"github.com/huahaiwudi/multichain-sync-account/common/retry"
-	"github.com/huahaiwudi/multichain-sync-account/common/tasks"
-	"github.com/huahaiwudi/multichain-sync-account/database"
+	"github.com/0xshin-chan/multichain-sync-account/common/retry"
+	"github.com/0xshin-chan/multichain-sync-account/common/tasks"
+	"github.com/0xshin-chan/multichain-sync-account/database"
 )
 
 type WithdrawNotify struct {

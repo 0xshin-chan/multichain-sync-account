@@ -10,9 +10,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/huahaiwudi/multichain-sync-account/database"
-	"github.com/huahaiwudi/multichain-sync-account/protobuf/wallet"
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient"
+	"github.com/0xshin-chan/multichain-sync-account/database"
+	"github.com/0xshin-chan/multichain-sync-account/protobuf/wallet"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/syncclient"
 )
 
 const MaxRecvMessageSize = 1024 * 1024 * 300

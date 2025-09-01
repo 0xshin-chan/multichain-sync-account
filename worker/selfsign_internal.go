@@ -15,15 +15,15 @@ import (
 	"github.com/google/uuid"
 	"github.com/status-im/keycard-go/hexutils"
 
-	"github.com/huahaiwudi/multichain-sync-account/common/json2"
-	"github.com/huahaiwudi/multichain-sync-account/common/retry"
-	"github.com/huahaiwudi/multichain-sync-account/common/tasks"
-	"github.com/huahaiwudi/multichain-sync-account/config"
-	"github.com/huahaiwudi/multichain-sync-account/database"
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/signclient"
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient"
-	"github.com/huahaiwudi/multichain-sync-account/rpcclient/syncclient/account"
-	types2 "github.com/huahaiwudi/multichain-sync-account/services/rpc"
+	"github.com/0xshin-chan/multichain-sync-account/common/json2"
+	"github.com/0xshin-chan/multichain-sync-account/common/retry"
+	"github.com/0xshin-chan/multichain-sync-account/common/tasks"
+	"github.com/0xshin-chan/multichain-sync-account/config"
+	"github.com/0xshin-chan/multichain-sync-account/database"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/signclient"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/syncclient"
+	"github.com/0xshin-chan/multichain-sync-account/rpcclient/syncclient/account"
+	types2 "github.com/0xshin-chan/multichain-sync-account/services/rpc"
 )
 
 type SelfSignInternal struct {
