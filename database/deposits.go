@@ -53,7 +53,7 @@ type DepositsDB interface {
 	DepositsView
 
 	StoreDeposits(string, []*Deposits) error
-	UpdateDepositsComfirms(requestId string, blockNumber uint64, preconfirms uint64, confirms uint64) error
+	UpdateDepositsConfirms(requestId string, blockNumber uint64, preConfirms uint64, confirms uint64) error
 	UpdateDepositById(requestId string, guid string, signedTx string, status TxStatus) error
 	UpdateDepositsStatusById(requestId string, status TxStatus, depositList []*Deposits) error
 	UpdateDepositsStatusByTxHash(requestId string, depositList []*Deposits) error
@@ -134,7 +134,7 @@ func (db *depositsDB) QueryDepositsById(requestId string, guid string) (*Deposit
 	return &deposit, nil
 }
 
-func (db *depositsDB) UpdateDepositsComfirms(requestId string, blockNumber uint64, preconfirms uint64, confirms uint64) error {
+func (db *depositsDB) UpdateDepositsConfirms(requestId string, blockNumber uint64, preConfirms uint64, confirms uint64) error {
 	return db.gorm.Transaction(func(tx *gorm.DB) error {
 		var unConfirmDeposits []*Deposits
 		result := tx.Table("deposits_"+requestId).
@@ -149,8 +149,8 @@ func (db *depositsDB) UpdateDepositsComfirms(requestId string, blockNumber uint6
 			if chainConfirm >= confirms {
 				deposit.Confirms = uint8(confirms)
 				deposit.Status = TxStatusFinalized
-			} else if chainConfirm < confirms && chainConfirm >= preconfirms {
-				deposit.Confirms = uint8(preconfirms)
+			} else if chainConfirm < confirms && chainConfirm >= preConfirms {
+				deposit.Confirms = uint8(preConfirms)
 				deposit.Status = TxStatusSafe
 			}
 			if err := tx.Table("deposits_" + requestId).Save(&deposit).Error; err != nil {

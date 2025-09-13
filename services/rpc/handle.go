@@ -87,6 +87,7 @@ func (bws *BusinessMiddleWireServices) ExportAddressesByPublicKeys(ctx context.C
 	)
 	for _, value := range request.PublicKeys {
 		address := bws.accountRpcClient.ExportAddressByPubKey("", value.PublicKey)
+		log.Info("address and pubKey", "address===================", address, "publicKey=================", value.PublicKey)
 		item := &wallet.Address{
 			Type:    value.Type,
 			Address: address,

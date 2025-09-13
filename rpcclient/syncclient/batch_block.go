@@ -64,6 +64,7 @@ func (b *BatchBlock) NextHeaders(maxSize uint64) ([]BlockHeader, *BlockHeader, b
 			return nil, nil, false, err
 			// 内部状态比链上进度还超前（不正常情况）
 		} else if cmp > 0 {
+			log.Info("block height", "endHeight", endHeight, "lastTraversedHeader", b.lastTraversedHeader.Number)
 			return nil, nil, false, ErrBatchBlockAheadOfProvider
 		}
 	}

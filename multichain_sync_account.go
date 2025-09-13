@@ -81,10 +81,10 @@ func (mcs *MultiChainSync) Start(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	err = mcs.FallBack.Start()
-	if err != nil {
-		return err
-	}
+	//err = mcs.FallBack.Start()
+	//if err != nil {
+	//	return err
+	//}
 	return nil
 }
 

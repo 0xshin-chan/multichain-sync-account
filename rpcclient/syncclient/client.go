@@ -31,7 +31,7 @@ func (car *ChainAccountRpcClient) ExportAddressByPubKey(typeOrVersion, publicKey
 	address, err := car.AccountRpClient.ConvertAddress(car.Ctx, req)
 	if err != nil {
 		log.Error("covert address fail", "err", err)
-		return ""
+		return err.Error()
 	}
 	if address.Code == account2.ReturnCode_ERROR {
 		log.Error("covert address fail", "err", err)

@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS deposits
     token_meta               VARCHAR  NOT NULL,
 
     tx_sign_hex              VARCHAR  NOT NULL,
-    is_collection            BOOLEAN  NOT NULL,
+    is_collection            BOOLEAN  NOT NULL
     );
 CREATE INDEX IF NOT EXISTS deposits_hash ON deposits (hash);
 CREATE INDEX IF NOT EXISTS deposits_timestamp ON deposits (timestamp);

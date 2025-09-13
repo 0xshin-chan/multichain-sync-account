@@ -75,6 +75,8 @@ func NewDeposit(cfg *config.Config, db *database.DB, rpcClient *syncclient.Chain
 		blockBatch:          syncclient.NewBatchBlock(rpcClient, fromHeader, big.NewInt(int64(cfg.ChainNode.Confirmations))),
 		database:            db,
 		isFallBack:          false,
+		preConfirms:         uint8(cfg.ChainNode.PreConfirmations),
+		confirms:            uint8(cfg.ChainNode.Confirmations),
 		fallbackBlockHeader: nil,
 	}
 
@@ -218,12 +220,6 @@ func (deposit *Deposit) handleBatch(batch map[string]*TransactionChannel) error 
 					}
 				}
 
-				// 更新充值确认数
-				if err := tx.Deposits.UpdateDepositsComfirms(business.BusinessUid, batch[business.BusinessUid].BlockHeight, uint64(deposit.preConfirms), uint64(deposit.confirms)); err != nil {
-					log.Info("Handle confirms fail", "totalTx", "err", err)
-					return err
-				}
-
 				// 更新余额
 				if len(balances) > 0 {
 					log.Info("Handle balances success", "totalTx", len(balances))
@@ -272,6 +268,7 @@ func (d *Deposit) BuildTransaction(tx *Transaction, txMsg *account.TxMessage) (*
 	transactionTx := &database.Transactions{
 		GUID:         uuid.New(),
 		BlockHash:    common.Hash{},
+		BlockNumber:  tx.BlockNumber,
 		Hash:         common.HexToHash(tx.Hash),
 		FromAddress:  common.HexToAddress(tx.FromAddress),
 		ToAddress:    common.HexToAddress(tx.ToAddress),

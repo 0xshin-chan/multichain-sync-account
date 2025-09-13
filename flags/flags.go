@@ -53,6 +53,12 @@ var (
 		EnvVars: prefixEnvVars("CONFIRMATIONS"),
 		Value:   64,
 	}
+	PreConfirmations = &cli.UintFlag{
+		Name:    "PreConfirmations",
+		Usage:   "The PreConfirmations depth of l1",
+		EnvVars: prefixEnvVars("PRE_CONFIRMATIONS"),
+		Value:   64,
+	}
 	SynchronizerIntervalFlag = &cli.DurationFlag{
 		Name:    "sync-interval",
 		Usage:   "The interval of l1 synchronization",

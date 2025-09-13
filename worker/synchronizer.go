@@ -44,6 +44,8 @@ type BaseSynchronizer struct {
 	headers             []syncclient.BlockHeader
 	worker              *clock.LoopFn
 	fallbackBlockHeader *syncclient.BlockHeader
+	preConfirms         uint8
+	confirms            uint8
 	isFallBack          bool
 }
 
@@ -146,6 +148,12 @@ func (syncer *BaseSynchronizer) processBatch(headers []syncclient.BlockHeader) e
 
 		// 遍历每个业务，筛选属于该业务的交易
 		for _, businessId := range businessList {
+			// 更新充值确认数
+			if err := syncer.database.Deposits.UpdateDepositsConfirms(businessId.BusinessUid, headers[i].Number.Uint64(), uint64(syncer.preConfirms), uint64(syncer.confirms)); err != nil {
+				log.Info("Handle confirms fail", "totalTx", "err", err)
+				return err
+			}
+
 			var businessTransactions []*Transaction
 			for _, tx := range txList {
 				toAddress := common.HexToAddress(tx.To)
@@ -155,15 +163,7 @@ func (syncer *BaseSynchronizer) processBatch(headers []syncclient.BlockHeader) e
 				existFromAddress, FromAddressType := syncer.database.Addresses.AddressExist(businessId.BusinessUid, &fromAddress)
 				// 如果两个地址都不属于该业务，跳过
 				if !existToAddress && !existFromAddress {
-					continue
-				}
-
-				tokenInfo, err := syncer.database.Tokens.TokensInfoByAddress(businessId.BusinessUid, tx.TokenAddress)
-				if err != nil {
-					log.Error("get token info by token address fail", "err", err)
-				}
-
-				if tokenInfo == nil {
+					log.Info("existFromAddress and existToAddress information", "existFromAddress", existFromAddress, "existToAddress", existToAddress)
 					continue
 				}
 

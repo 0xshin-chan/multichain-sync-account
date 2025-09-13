@@ -38,6 +38,7 @@ type ChainNodeConfig struct {
 	RpcUrl               string
 	StartingHeight       uint
 	Confirmations        uint
+	PreConfirmations     uint
 	SynchronizerInterval time.Duration
 	WorkerInterval       time.Duration
 	BlocksStep           uint64
@@ -97,6 +98,7 @@ func NewConfig(ctx *cli.Context) Config {
 			RpcUrl:               ctx.String(flags.RpcUrlFlag.Name),
 			StartingHeight:       ctx.Uint(flags.StartingHeightFlag.Name),
 			Confirmations:        ctx.Uint(flags.ConfirmationsFlag.Name),
+			PreConfirmations:     ctx.Uint(flags.PreConfirmations.Name),
 			SynchronizerInterval: ctx.Duration(flags.SynchronizerIntervalFlag.Name),
 			WorkerInterval:       ctx.Duration(flags.WorkerIntervalFlag.Name),
 			BlocksStep:           ctx.Uint64(flags.BlocksStepFlag.Name),

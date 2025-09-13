@@ -172,7 +172,8 @@ func (s *SelfSignInternal) processCollection() error {
 							RawTx:   signedTx.SignedTx,
 						}
 
-						// 发交易上链
+						// todo：发交易上链, 如果有多笔交易需要归集，自己维护 nonce， 如果是同一个地址，可以签名之后跌倒 queue 里面发送出去， 另一个任务处理receipt
+						// todo：系统里面热钱包地址很多，如果这段时间有 n 个交易，需要讲这些交易均分给热钱包，然后再签名交易。但更优的方法是合约
 						txReturn, err := s.syncRpcClient.AccountRpClient.SendTx(context.Background(), sendTxBefore)
 						if err != nil {
 							return err
